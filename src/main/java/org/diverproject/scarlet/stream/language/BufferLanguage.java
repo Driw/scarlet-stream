@@ -6,6 +6,8 @@ import org.diverproject.scarlet.language.Language;
 
 public enum BufferLanguage implements Language
 {
+	BUFFER_FACTORY_IO_EXCEPTION			("failure on create buffer from file (filename: %s)"),
+
 	READ_SINGLE_BYTE					("end of buffer reached to read a single byte (offset: %d, capacity: %d)"),
 	READ_BYTE_ARRAY                     ("end of buffer reached to read a byte array (offset: %d, count: %d, capacity: %d)"),
 	READ_CLOSED                         ("cannot read a closed buffer"),

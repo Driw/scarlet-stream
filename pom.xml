@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>org.diverproject</groupId>
 			<artifactId>scarlet-base</artifactId>
-			<version>0.1.0-ALPHA</version>
+			<version>0.1.0</version>
 		</dependency>
 
 		<dependency>

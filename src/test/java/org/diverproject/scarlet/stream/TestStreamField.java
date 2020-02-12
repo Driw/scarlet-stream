@@ -1,5 +1,11 @@
 package org.diverproject.scarlet.stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,12 +14,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Stream Field")
 public class TestStreamField
@@ -31,6 +31,13 @@ public class TestStreamField
 		assertEquals(0F, allFields.getFloatValue());
 		assertEquals(0D, allFields.getDoubleValue());
 		assertFalse(allFields.isBooleanValue());
+		assertNull(allFields.getByteObjectValue());
+		assertNull(allFields.getShortObjectValue());
+		assertNull(allFields.getIntObjectValue());
+		assertNull(allFields.getLongObjectValue());
+		assertNull(allFields.getFloatObjectValue());
+		assertNull(allFields.getDoubleObjectValue());
+		assertNull(allFields.getBooleanObjectValue());
 		assertEquals(0, allFields.getCharValue());
 		assertNull(allFields.getStringValue());
 		assertNull(allFields.getAllFields());
@@ -63,6 +70,13 @@ public class TestStreamField
 		assertEquals(Float.MAX_VALUE, allFields.getFloatValue());
 		assertEquals(Double.MAX_VALUE, allFields.getDoubleValue());
 		assertTrue(allFields.isBooleanValue());
+		assertEquals(Byte.MAX_VALUE, allFields.getByteObjectValue());
+		assertEquals(Short.MAX_VALUE, allFields.getShortObjectValue());
+		assertEquals(Integer.MAX_VALUE, allFields.getIntObjectValue());
+		assertEquals(Long.MAX_VALUE, allFields.getLongObjectValue());
+		assertEquals(Float.MAX_VALUE, allFields.getFloatObjectValue());
+		assertEquals(Double.MAX_VALUE, allFields.getDoubleObjectValue());
+		assertTrue(allFields.getBooleanObjectValue());
 		assertEquals(Character.MAX_VALUE, allFields.getCharValue());
 		assertEquals(TestStreamField.class.getName(), allFields.getStringValue());
 		assertEquals(ALL_FIELDS, allFields.getAllFields());
@@ -90,16 +104,24 @@ public class TestStreamField
 			field.setAccessible(true);
 			{
 				streamField.reset().setField(field).of(allFieldsArray)
-					.is(Byte[].class, byte[].class).thenDo(this::getBytes)
-					.is(Short[].class, short[].class).thenDo(this::getShorts)
-					.is(Integer[].class, int[].class).thenDo(this::getInts)
-					.is(Long[].class, long[].class).thenDo(this::getLongs)
-					.is(Float[].class, float[].class).thenDo(this::getFloats)
-					.is(Double[].class, double[].class).thenDo(this::getDoubles)
-					.is(Boolean[].class, boolean[].class).thenDo(this::getBooleans)
-					.is(Character[].class, char[].class).thenDo(this::getChars)
-					.is(String[].class).thenDo(this::getStrings)
-					.is(Object[].class).thenDo(this::getObjects);
+					.isArray(Byte.TYPE).thenDo(this::getBytes)
+					.isArray(Short.TYPE).thenDo(this::getShorts)
+					.isArray(Integer.TYPE).thenDo(this::getInts)
+					.isArray(Long.TYPE).thenDo(this::getLongs)
+					.isArray(Float.TYPE).thenDo(this::getFloats)
+					.isArray(Double.TYPE).thenDo(this::getDoubles)
+					.isArray(Boolean.TYPE).thenDo(this::getBooleans)
+					.isArray(Character.TYPE).thenDo(this::getChars)
+					.isArray(Byte.class).thenDo(this::getBytesObject)
+					.isArray(Short.class).thenDo(this::getShortsObject)
+					.isArray(Integer.class).thenDo(this::getIntsObject)
+					.isArray(Long.class).thenDo(this::getLongsObject)
+					.isArray(Float.class).thenDo(this::getFloatsObject)
+					.isArray(Double.class).thenDo(this::getDoublesObject)
+					.isArray(Boolean.class).thenDo(this::getBooleansObject)
+					.isArray(Character.class).thenDo(this::getCharsObject)
+					.isArray(String.class).thenDo(this::getStrings)
+					.isArray(Object.class).thenDo(this::getObjects);
 			}
 			field.setAccessible(false);
 		}
@@ -135,6 +157,14 @@ public class TestStreamField
 	private double[] getDoubles() { return new double[] { Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE }; }
 	private boolean[] getBooleans() { return new boolean[] { true, true, true }; }
 	private char[] getChars() { return new char[] { Character.MAX_VALUE, Character.MAX_VALUE, Character.MAX_VALUE }; }
+	private Byte[] getBytesObject() { return new Byte[] { Byte.MAX_VALUE, Byte.MAX_VALUE, Byte.MAX_VALUE }; }
+	private Short[] getShortsObject() { return new Short[] { Short.MAX_VALUE, Short.MAX_VALUE, Short.MAX_VALUE }; }
+	private Integer[] getIntsObject() { return new Integer[] { Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE }; }
+	private Long[] getLongsObject() { return new Long[] { Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE }; }
+	private Float[] getFloatsObject() { return new Float[] { Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE }; }
+	private Double[] getDoublesObject() { return new Double[] { Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE }; }
+	private Boolean[] getBooleansObject() { return new Boolean[] { true, true, true }; }
+	private Character[] getCharsObject() { return new Character[] { Character.MAX_VALUE, Character.MAX_VALUE, Character.MAX_VALUE }; }
 	private String[] getStrings() { return new String[] { TestStreamField.class.getName(), TestStreamField.class.getName(), TestStreamField.class.getName() }; }
 	private AllFields[] getObjects() { return new AllFields[] { ALL_FIELDS, ALL_FIELDS, ALL_FIELDS }; }
 
@@ -152,6 +182,14 @@ public class TestStreamField
 		private double doubleValue;
 		private boolean booleanValue;
 		private char charValue;
+		private Byte byteObjectValue;
+		private Short shortObjectValue;
+		private Integer intObjectValue;
+		private Long longObjectValue;
+		private Float floatObjectValue;
+		private Double doubleObjectValue;
+		private Boolean booleanObjectValue;
+		private Character charObjectValue;
 		private String stringValue;
 		private AllFields allFields;
 	}
@@ -170,6 +208,14 @@ public class TestStreamField
 		private double[] doubleValue;
 		private boolean[] booleanValue;
 		private char[] charValue;
+		private Byte[] byteObjectValue;
+		private Short[] shortObjectValue;
+		private Integer[] intObjectValue;
+		private Long[] longObjectValue;
+		private Float[] floatObjectValue;
+		private Double[] doubleObjectValue;
+		private Boolean[] booleanObjectValue;
+		private Character[] charObjectValue;
 		private String[] stringValue;
 		private AllFields[] allFields;
 	}

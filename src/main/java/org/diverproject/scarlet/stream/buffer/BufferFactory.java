@@ -8,12 +8,14 @@ import java.nio.file.Files;
 
 public class BufferFactory
 {
-	public BufferInput inputOf(int length)
+	private BufferFactory() { }
+
+	public static BufferInput inputOf(int length)
 	{
 		return inputOf(new byte[length]);
 	}
 
-	public BufferInput inputOf(byte[] bytes)
+	public static BufferInput inputOf(byte[] bytes)
 	{
 		return new DefaultBufferInput().setBufferReader(
 			new DefaultBufferReader()
@@ -21,12 +23,12 @@ public class BufferFactory
 		);
 	}
 
-	public BufferInput inputOf(String filename)
+	public static BufferInput inputOf(String filename)
 	{
 		return inputOf(new File(filename));
 	}
 
-	public BufferInput inputOf(File file)
+	public static BufferInput inputOf(File file)
 	{
 		try {
 			return new DefaultBufferInput().setBufferReader(
@@ -40,12 +42,12 @@ public class BufferFactory
 		}
 	}
 
-	public BufferOutput outputOf(int length)
+	public static BufferOutput outputOf(int length)
 	{
 		return outputOf(new byte[length]);
 	}
 
-	public BufferOutput outputOf(byte[] bytes)
+	public static BufferOutput outputOf(byte[] bytes)
 	{
 		return new DefaultBufferOutput().setBufferWriter(
 			new DefaultBufferWriter()
